@@ -8,7 +8,10 @@ public class Cat : MonoBehaviour
     public float IdleTime { get; private set; } = 2.0f;         // time to spend in idle state
     public float FollowRange { get; private set; } = 5.0f;      // when player is closer than this, follow
     public float WaitRange { get; private set; } = 1.0f;    // when player is closer than this, wait
-    bool isFollowing = false;
+    private bool isFollowing = false;
+
+    private int treatCount = 0;
+    private int followAmount = 5;
 
     public GameObject Player { get; private set; }
     public NavMeshAgent Agent { get; private set; }
@@ -79,10 +82,44 @@ public class Cat : MonoBehaviour
 
     public void ReactToPlayer()
     {
+        //Messenger<int>.Broadcast(GameEvent.TREAT_COLLECTED, value);
         if (!isFollowing)
         {
             // if enough treats, follow, otherwise hiss at player
-            Messenger.Broadcast(GameEvent.CAT_COLLECTED);
+            if (treatCount >= followAmount)
+            {
+                Messenger.Broadcast(GameEvent.CAT_COLLECTED);
+                Debug.Log("cat collected!");
+                isFollowing = true;
+                // let interested parties know 5 treats were consumed
+                Messenger<int>.Broadcast(GameEvent.TREATS_USED, (followAmount * -1));
+            }
+            else
+            {
+                Debug.Log("hiss!");
+            }
         }
+    }
+    private void Awake()
+    {
+        Messenger<int>.AddListener(GameEvent.TREAT_COLLECTED, OnTreatsChanged);
+        Messenger<int>.AddListener(GameEvent.TREATS_USED, OnTreatsChanged);
+    }
+
+    private void OnDestroy()
+    {
+        Messenger<int>.RemoveListener(GameEvent.TREAT_COLLECTED, OnTreatsChanged);
+        Messenger<int>.RemoveListener(GameEvent.TREATS_USED, OnTreatsChanged);
+    }
+
+    private void OnTreatsChanged(int newTreats)
+    {
+        UpdateTreatsCollected(newTreats);
+    }
+
+    // update treats collected display
+    public void UpdateTreatsCollected(int newTreatAmount)
+    {
+        treatCount += newTreatAmount;
     }
 }

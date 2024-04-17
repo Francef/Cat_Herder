@@ -15,13 +15,8 @@ public class SceneController : MonoBehaviour
     private int zMin = -40;
     private int zMax = 100;
 
+    [SerializeField] private GameObject treatPrefab;
     [SerializeField] private UIController ui;
-
-    // amount of cats the player has collected in the game
-    private int catsCollected = 0;
-
-    // amount of treats the player has collected
-    private int treatsCollected = 0;
 
     void Start()
     {
@@ -47,26 +42,4 @@ public class SceneController : MonoBehaviour
         
     }
 
-    private void Awake()
-    {
-        Messenger.AddListener(GameEvent.CAT_COLLECTED, OnCatCollected);
-        Messenger.AddListener(GameEvent.TREAT_COLLECTED, OnTreatCollected);
-    }
-
-    private void OnDestroy()
-    {
-        Messenger.RemoveListener(GameEvent.CAT_COLLECTED, OnCatCollected);
-        Messenger.RemoveListener(GameEvent.TREAT_COLLECTED, OnTreatCollected);
-    }
-
-    private void OnCatCollected()
-    {
-        catsCollected++;
-        ui.UpdateCatsCollected(catsCollected);
-    }    
-    private void OnTreatCollected()
-    {
-        treatsCollected++;
-        ui.UpdateTreatsCollected(treatsCollected);
-    }
 }

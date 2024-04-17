@@ -18,6 +18,7 @@ public class CatFollowState : CatStateMachineBehaviour
         if (cat.GetDistanceFromPlayer() < cat.WaitRange)
         {
             animator.SetTrigger("wait");
+            cat.ReactToPlayer();
         }
     }
 
