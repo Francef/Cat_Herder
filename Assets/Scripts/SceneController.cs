@@ -42,4 +42,24 @@ public class SceneController : MonoBehaviour
         
     }
 
+    private void Awake()
+    {
+        Messenger.AddListener(GameEvent.RESTART_GAME, OnRestartGame);
+    }
+
+    private void OnDestroy()
+    {
+        Messenger.RemoveListener(GameEvent.RESTART_GAME, OnRestartGame);
+    }
+
+    public void OnRestartGame()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    private void OnWinGame()
+    {
+        ui.ShowGameOverPopup();
+    }
+
 }

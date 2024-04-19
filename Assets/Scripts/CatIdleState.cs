@@ -24,7 +24,7 @@ public class CatIdleState : CatStateMachineBehaviour
         {
             animator.SetTrigger("lookaround");
         }
-        else if (cat.GetDistanceFromPlayer() < cat.FollowRange)
+        else if (cat.GetDistanceFromPlayer() < cat.FollowRange && cat.GetTreats() >= 5)
         {
             animator.SetTrigger("follow");
         }

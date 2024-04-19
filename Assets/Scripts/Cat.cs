@@ -10,7 +10,7 @@ public class Cat : MonoBehaviour
     public float WaitRange { get; private set; } = 1.0f;    // when player is closer than this, wait
     private bool isFollowing = false;
 
-    private int treatCount = 0;
+    private int treatCount;
     private int followAmount = 5;
 
     public GameObject Player { get; private set; }
@@ -23,6 +23,7 @@ public class Cat : MonoBehaviour
     private bool hasJustPatrolled;
     void Start()
     {
+        treatCount = 0;
         Agent = GetComponent<NavMeshAgent>();                   // get a reference to the NavMeshAgent
         Player = GameObject.FindGameObjectWithTag("Player");    // get a reference to the Player
 
@@ -82,7 +83,6 @@ public class Cat : MonoBehaviour
 
     public void ReactToPlayer()
     {
-        //Messenger<int>.Broadcast(GameEvent.TREAT_COLLECTED, value);
         if (!isFollowing)
         {
             // if enough treats, follow, otherwise hiss at player
@@ -121,5 +121,10 @@ public class Cat : MonoBehaviour
     public void UpdateTreatsCollected(int newTreatAmount)
     {
         treatCount += newTreatAmount;
+    }
+
+    public int GetTreats()
+    {
+        return treatCount;
     }
 }
