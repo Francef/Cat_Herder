@@ -13,12 +13,11 @@ public class CatFollowState : CatStateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        cat.Agent.speed = 4.0f; // increase speed to a run to keep up with player
+        cat.Agent.speed = 5.0f; // increase speed to a run to keep up with player
         cat.Agent.SetDestination(cat.Player.transform.position);
         if (cat.GetDistanceFromPlayer() < cat.WaitRange)
         {
             animator.SetTrigger("wait");
-            cat.ReactToPlayer();
         }
     }
 

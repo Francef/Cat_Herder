@@ -4,18 +4,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SocialPlatforms.Impl;
+using System;
 
 public class UIController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI catValue;
     [SerializeField] private TextMeshProUGUI treatValue;
+    [SerializeField] private TextMeshProUGUI dialogText;
     [SerializeField] private OptionsPopup optionsPopup;
     [SerializeField] private YouWinPopup youWinPopup;
+    [SerializeField] private DialogBox dialogBox;
     private int initialCats = 0;
     private int catsCollected;
     private int initialTreats = 0;
     private int treatsCollected;
     private int popupsActive = 0;
+    Dictionary<String, String> dialogDict = new Dictionary<String, String>() 
+    { { "intro1","Oh no! Five stray cats are wandering the hillside. Go gather them before they fall in with a bad crowd!" }, 
+      { "intro2","The thing about cats is they don't trust just anybody. You might have to bribe your way into their inner circle." }, 
+      { "intro3","Go find three treats and get close enough to a cat for them to catch the scent. Give up those treats and they will make a purrfect companion on your adventures." }, 
+      { "end","Pawsome! You collected all five cats, go back home so they can go have a well-deserved 23 hour nap." } 
+    }; 
+    
     void Start()
     {
         catsCollected = initialCats;
@@ -37,6 +47,7 @@ public class UIController : MonoBehaviour
         Messenger<int>.AddListener(GameEvent.TREATS_USED, OnTreatsChanged);
         Messenger.AddListener(GameEvent.POPUP_OPENED, OnPopupOpened);
         Messenger.AddListener(GameEvent.POPUP_CLOSED, OnPopupClosed);
+        Messenger<string>.AddListener(GameEvent.DIALOG_EVENT, OnDialogEvent);
     }
 
     private void OnDestroy()
@@ -46,6 +57,7 @@ public class UIController : MonoBehaviour
         Messenger<int>.RemoveListener(GameEvent.TREATS_USED, OnTreatsChanged);
         Messenger.RemoveListener(GameEvent.POPUP_OPENED, OnPopupOpened);
         Messenger.RemoveListener(GameEvent.POPUP_CLOSED, OnPopupClosed);
+        Messenger<string>.AddListener(GameEvent.DIALOG_EVENT, OnDialogEvent);
     }
 
     private void OnCatCollected()
@@ -63,6 +75,11 @@ public class UIController : MonoBehaviour
     {
         catsCollected++;
         catValue.text = catsCollected.ToString();
+        if (catsCollected == 5)
+        {
+            Messenger.Broadcast(GameEvent.ALL_CATS_COLLECTED);
+            Messenger<string>.Broadcast(GameEvent.DIALOG_EVENT, "end");
+        }
     }
 
     // update treats collected display
@@ -108,7 +125,18 @@ public class UIController : MonoBehaviour
         }
     }
 
-    public void ShowGameOverPopup()
+    private void OnDialogEvent(string dialog)
+    {
+        dialogBox.Open();
+        UpdateDialogText(dialog);
+    }
+
+    public void UpdateDialogText(string dialog)
+    {
+        dialogText.text = dialogDict[dialog];
+    }
+
+    public void ShowYouWinPopup()
     {
         youWinPopup.Open();
     }

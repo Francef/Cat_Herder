@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerMovement : ActiveDuringGameplay
+public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]
-    Animator anim;
-    [SerializeField]
-    private CharacterController cc;
+    [SerializeField] Animator anim;
+    [SerializeField] private CharacterController cc;
 
     private float speed = 9.0f;         // XZ movement speed
 
@@ -29,9 +27,12 @@ public class PlayerMovement : ActiveDuringGameplay
     [SerializeField] private Camera cam;                // a reference to the main camera
     private float rotateToFaceAwayFromCameraSpeed = 5f; // the speed to rotate our Player to align with the camera view.
 
+    private bool hasCollectedAllCats;
+
 
     private void Start()
     {
+        hasCollectedAllCats = false;
         // calculate gravity & initial jump velocity required for our jump
         float timeToApex = jumpTime / 2.0f;
         gravity = (-2 * jumpHeight) / Mathf.Pow(timeToApex, 2);
@@ -112,6 +113,42 @@ public class PlayerMovement : ActiveDuringGameplay
         
         // replace the above line with this one to enable smoothing
         transform.rotation = Quaternion.Slerp(transform.rotation, camRotation, rotateToFaceAwayFromCameraSpeed * Time.deltaTime);
+    }
+
+    private void Awake()
+    {
+        Messenger.AddListener(GameEvent.ALL_CATS_COLLECTED, OnAllCatsCollected);
+        Messenger.AddListener(GameEvent.GAME_ACTIVE, OnGameActive);
+        Messenger.AddListener(GameEvent.GAME_INACTIVE, OnGameInactive);
+    }
+
+    private void OnDestroy()
+    {
+        Messenger.RemoveListener(GameEvent.ALL_CATS_COLLECTED, OnAllCatsCollected);
+        Messenger.RemoveListener(GameEvent.GAME_ACTIVE, OnGameActive);
+        Messenger.RemoveListener(GameEvent.GAME_INACTIVE, OnGameInactive);
+    }
+
+    public void OnGameActive()
+    {
+        this.enabled = true;
+    }
+    public void OnGameInactive()
+    {
+        this.enabled = false;
+    }
+
+    private void OnAllCatsCollected()
+    {
+        hasCollectedAllCats = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (hasCollectedAllCats)
+        {
+            Messenger.Broadcast(GameEvent.WIN_GAME);
+        }
     }
 
 }

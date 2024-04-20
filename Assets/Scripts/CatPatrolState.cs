@@ -23,9 +23,13 @@ public class CatPatrolState : CatStateMachineBehaviour
             cat.SetHasJustPatrolled(true);  // tell cat script that patrol was just finished
             animator.SetTrigger("idle"); // go to idle state
         }
-        else if (cat.GetDistanceFromPlayer() < cat.FollowRange && cat.GetTreats() >= 5)
+        else if (cat.GetDistanceFromPlayer() < cat.FollowRange)
         {
-            animator.SetTrigger("follow");
+            if(cat.GetTreats() >= 3)
+            {
+                animator.SetTrigger("follow");
+            }
+            cat.ReactToPlayer();
         }
     }
 

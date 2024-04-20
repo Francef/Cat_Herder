@@ -11,7 +11,7 @@ public class Cat : MonoBehaviour
     private bool isFollowing = false;
 
     private int treatCount;
-    private int followAmount = 5;
+    private int followAmount = 3;                           // amount of treats needed to have cat follow
 
     public GameObject Player { get; private set; }
     public NavMeshAgent Agent { get; private set; }
@@ -21,6 +21,10 @@ public class Cat : MonoBehaviour
     private Vector3 wayPoint1;
     private Vector3 wayPoint2;
     private bool hasJustPatrolled;
+
+    [SerializeField] private AudioClip screechSound;
+    [SerializeField] private AudioClip purrSound;
+    [SerializeField] private AudioSource audioSrc;
     void Start()
     {
         treatCount = 0;
@@ -89,15 +93,18 @@ public class Cat : MonoBehaviour
             if (treatCount >= followAmount)
             {
                 Messenger.Broadcast(GameEvent.CAT_COLLECTED);
+                audioSrc.PlayOneShot(purrSound);
                 Debug.Log("cat collected!");
                 isFollowing = true;
-                // let interested parties know 5 treats were consumed
+                // let interested parties know 3 treats were consumed
                 Messenger<int>.Broadcast(GameEvent.TREATS_USED, (followAmount * -1));
             }
             else
             {
                 Debug.Log("hiss!");
+                audioSrc.PlayOneShot(screechSound);
             }
+            Debug.Log("hiss!");
         }
     }
     private void Awake()

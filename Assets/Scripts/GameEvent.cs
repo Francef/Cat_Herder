@@ -18,4 +18,8 @@ public static class GameEvent
 
     public const string GAME_INACTIVE = "GAME_INACTIVE";
 
+    public const string WIN_GAME = "WIN_GAME";
+
+    public const string DIALOG_EVENT = "DIALOG_EVENT";
+
 }
