@@ -22,7 +22,7 @@ public class UIController : MonoBehaviour
     Dictionary<String, String> dialogDict = new Dictionary<String, String>() 
     { { "intro1","Oh no! Five stray cats are wandering the hillside. Go gather them before they fall in with a bad crowd!" }, 
       { "intro2","The thing about cats is they don't trust just anybody. You might have to bribe your way into their inner circle." }, 
-      { "intro3","Go find three treats and get close enough to a cat for them to catch the scent. Give up those treats and they will make a purrfect companion on your adventures." }, 
+      { "intro3","Go find three treats and get close enough to a cat for them to catch the scent. Press 'enter' to give up those treats and they will make a purrfect companion on your adventures." }, 
       { "end","Pawsome! You collected all five cats, go back home so they can go have a well-deserved 23 hour nap." } 
     }; 
     

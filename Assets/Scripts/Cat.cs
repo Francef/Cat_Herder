@@ -87,7 +87,7 @@ public class Cat : MonoBehaviour
 
     public void ReactToPlayer()
     {
-        if (!isFollowing)
+        if (!isFollowing && Input.GetKeyDown(KeyCode.Return))
         {
             // if enough treats, follow, otherwise hiss at player
             if (treatCount >= followAmount)
