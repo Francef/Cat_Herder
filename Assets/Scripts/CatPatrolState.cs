@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CatPatrolState : CatStateMachineBehaviour
 {
+    private int followAmount = 1;                           // amount of treats needed to have cat follow
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -25,7 +26,7 @@ public class CatPatrolState : CatStateMachineBehaviour
         }
         else if (cat.GetDistanceFromPlayer() < cat.FollowRange)
         {
-            if(cat.GetTreats() >= 3)
+            if(cat.GetTreats() >= followAmount)
             {
                 animator.SetTrigger("follow");
             }

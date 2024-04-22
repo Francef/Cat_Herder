@@ -57,7 +57,7 @@ public class UIController : MonoBehaviour
         Messenger<int>.RemoveListener(GameEvent.TREATS_USED, OnTreatsChanged);
         Messenger.RemoveListener(GameEvent.POPUP_OPENED, OnPopupOpened);
         Messenger.RemoveListener(GameEvent.POPUP_CLOSED, OnPopupClosed);
-        Messenger<string>.AddListener(GameEvent.DIALOG_EVENT, OnDialogEvent);
+        Messenger<string>.RemoveListener(GameEvent.DIALOG_EVENT, OnDialogEvent);
     }
 
     private void OnCatCollected()

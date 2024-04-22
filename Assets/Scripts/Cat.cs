@@ -11,7 +11,7 @@ public class Cat : MonoBehaviour
     private bool isFollowing = false;
 
     private int treatCount;
-    private int followAmount = 3;                           // amount of treats needed to have cat follow
+    private int followAmount = 1;                           // amount of treats needed to have cat follow !! temporarily 1 for demo purposes
 
     public GameObject Player { get; private set; }
     public NavMeshAgent Agent { get; private set; }
@@ -97,7 +97,7 @@ public class Cat : MonoBehaviour
                 Debug.Log("cat collected!");
                 isFollowing = true;
                 // let interested parties know 3 treats were consumed
-                Messenger<int>.Broadcast(GameEvent.TREATS_USED, (followAmount * -1));
+                Messenger<int>.Broadcast(GameEvent.TREATS_USED, (followAmount * -1)); 
             }
             else
             {
