@@ -11,7 +11,7 @@ public class Cat : MonoBehaviour
     private bool isFollowing = false;
 
     private int treatCount;
-    private int followAmount = 1;                           // amount of treats needed to have cat follow !! temporarily 1 for demo purposes
+    private int followAmount = 3;                           // amount of treats needed to have cat follow
 
     public GameObject Player { get; private set; }
     public NavMeshAgent Agent { get; private set; }

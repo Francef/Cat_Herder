@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] Animator anim;
     [SerializeField] private CharacterController cc;
+    [SerializeField] ParticleSystem endGoal;
 
     private float speed = 9.0f;         // XZ movement speed
 
@@ -141,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnAllCatsCollected()
     {
         hasCollectedAllCats = true;
+        endGoal.Play();
     }
 
     private void OnTriggerEnter(Collider other)
